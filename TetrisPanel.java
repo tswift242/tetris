@@ -6,18 +6,21 @@ import java.io.*;
 import java.applet.AudioClip;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class TetrisPanel extends JPanel
 {
-	private final int WIDTH = 400, HEIGHT = 800;
-	private final int INIT_DELAY = 400;
-	private final int ROWS = 20, COLUMNS = 10;
+	private final int WIDTH = 400, HEIGHT = 800; //window size
+	private final int INIT_DELAY = 400; //timer delay
+	private final int ROWS = 20, COLUMNS = 10; //grid size
+	private final int NUM_HIGH_SCORES = 10;
+	private final String MUSIC_FILE = "12-hans_zimmer-time.wav";
 
 	private Timer timer;
 	private DirectionListener DL;
 	private PauseListener PL;
 	private NewGameListener NGL;
-	private int startX, startY, moveY, blockWidth, blockHeight, boardWidth, boardHeight, score, currentDelay, level;
+	private int moveY, blockWidth, blockHeight, boardWidth, boardHeight, score, currentDelay, level;
 	private boolean startOfGame, colLeft, colRight, colDown, ableToRotate, onTopOfBlockR, paused, musicOn, newGame, GAMEOVERflag, speedIncreased;
 	private Shapes block;
 	private gridBlock[][] Board;
@@ -25,14 +28,13 @@ public class TetrisPanel extends JPanel
 	private int[] HighScores;
 	private String[] initials;
 	private AudioClip tetrisMusic;
-	private JPanel panel;
+	private Random rand;
 
 	public TetrisPanel ()
 	{
-		timer = new Timer(INIT_DELAY, new TetrisListener()); //TODO: move to bottom of constructor
+		timer = new Timer(INIT_DELAY, new TetrisListener());
 
 		currentDelay = INIT_DELAY;
-		panel = this;
 		score = 0;
 		level = 1;
 		startOfGame = true;
@@ -43,6 +45,7 @@ public class TetrisPanel extends JPanel
 		speedIncreased = false;
 		scoreFont = new Font("SansSerif", Font.PLAIN, 20);
 		gameOverFont = new Font("SansSerif", Font.BOLD, 62);
+		rand = new Random();
 		Board = new gridBlock[ROWS + 2][COLUMNS];
 		for (int i = 0; i < Board.length; i++)
 		{
@@ -52,35 +55,27 @@ public class TetrisPanel extends JPanel
 			}
 		}
 
-		for (int j = 0; j < Board[21].length; j++)
+		//fill invisible bottom row
+		for (int j = 0; j < Board[ROWS+1].length; j++)
 		{
-			Board[21][j].fill();
+			Board[ROWS+1][j].fill();
 		}
 
-		//creates array to keep track of top 10 high scores
-		HighScores = new int[10];
-		for (int i = 0; i < HighScores.length; i++)
-		{
-			HighScores[i] = 0;
-		}
-
-		initials = new String[10];
-		for (int i = 0; i < initials.length; i++)
-		{
-			initials[i] = "xxx";
-		}
+		//keep track of high scores
+		HighScores = new int[NUM_HIGH_SCORES];
+		Arrays.fill(HighScores, 0);
+		initials = new String[NUM_HIGH_SCORES];
+		Arrays.fill(initials, "xxx");
 
 		//sets up music file to be played
 		URL url1 = null;
-
 		try
 		{
-			url1 = new URL ("file", "localhost", "12-hans_zimmer-time.wav");
+			url1 = new URL ("file", "localhost", MUSIC_FILE);
+			tetrisMusic = JApplet.newAudioClip (url1);
+			tetrisMusic.loop();
 		}
 		catch (Exception exception) {}
-
-		tetrisMusic = JApplet.newAudioClip (url1);
-		tetrisMusic.loop();
 
 		//sets up panel
 		setPreferredSize (new Dimension(WIDTH, HEIGHT));
@@ -97,11 +92,7 @@ public class TetrisPanel extends JPanel
 
 	public void newBlock ()
 	{
-		startX = (boardWidth/2) - 2*blockWidth;
-		startY = 0;
-
-		Random generator = new Random();
-		int randBlock = generator.nextInt(7);
+		int randBlock = rand.nextInt(7);
 
 		switch (randBlock)
 		{
@@ -128,8 +119,8 @@ public class TetrisPanel extends JPanel
 				break;
 		}
 
-		block.setX(startX);
-		block.setY(startY);
+		block.setX((getWidth()/2) - 2*blockWidth);
+		block.setY(0);
 
 		if (onTopOfBlock())
 			addToBoardGameOver();
@@ -245,7 +236,7 @@ public class TetrisPanel extends JPanel
 			}
 		}
 
-		if (getRightmostX() >= boardWidth)
+		if (getRightmostX() >= getWidth())
 			colRight = true;
 
 		return colRight;
@@ -632,8 +623,8 @@ public class TetrisPanel extends JPanel
 
 		//makes a JOptionPane appearing, allowing the user to enter in their initials or their name
 		/*String userInitials;
-		userInitials = JOptionPane.showInputDialog(panel, "Enter your initials or your name", "tgs");
-		JOptionPane.showMessageDialog(panel, "Thank you for playing");*/
+		userInitials = JOptionPane.showInputDialog(this, "Enter your initials or your name", "tgs");
+		JOptionPane.showMessageDialog(this, "Thank you for playing");*/
 
 		//compares current score against high scores and adjusts high scores accordingly
 		if (score > HighScores[0])
