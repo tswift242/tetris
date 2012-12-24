@@ -1,0 +1,14 @@
+Tetris High Scores
+
+
+
+1	Tom	45300
+2	Tom	39500
+3	Tom	38100
+4	Tom	35300
+5	Tom	33400
+6	Tom	32500
+7	Tom	31900
+8	Tom	30000
+9	Tom	29300
+10	Tom	29200
