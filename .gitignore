@@ -5,7 +5,7 @@ Project 3 Extras
 Tetris music options
 
 #Files
-*~
 *.wav
 *.class
 *.html
+TetrisHighScores.txt
