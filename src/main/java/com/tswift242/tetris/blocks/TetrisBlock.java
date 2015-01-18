@@ -2,7 +2,7 @@ package com.tswift242.tetris.blocks;
 
 import java.awt.Color;
 
-public class TetrisBlock
+public abstract class TetrisBlock
 {
 	protected Boolean[][] template;
 	protected int x, y, orientation, curOrientLength, nextOrientLength;
