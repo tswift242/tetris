@@ -30,14 +30,25 @@ import com.tswift242.tetris.blocks.Sblock;
 import com.tswift242.tetris.blocks.Tblock;
 import com.tswift242.tetris.blocks.TetrisBlock;
 import com.tswift242.tetris.blocks.Zblock;
+import com.tswift242.tetris.config.TetrisProperties;
 
 public class TetrisPanel extends JPanel
 {
-	private final int WIDTH = 400, HEIGHT = 800; //window size
-	private final int INIT_DELAY = 400; //timer delay
-	private final int ROWS = 20, COLUMNS = 10; //grid size
-	private final int NUM_HIGH_SCORES = 10;
-	private final String MUSIC_FILE = "/12-hans_zimmer-time.wav";
+	private static final int NUM_UNIQUE_TETRIS_BLOCKS = 7;
+	// window size
+	private static final int WIDTH = 400;
+	private static final int HEIGHT = 800;
+	// grid size
+	private static final int ROWS = 20;
+	private static final int COLUMNS = 10;
+	private static final int INIT_DELAY = 400; //timer delay
+	// TODO: make this value formulaic instead of fixed in the future
+	private static final int SCORE_INCREMENT_VALUE = 100;
+	private static final int HIGH_SCORES_FILENAME = "TetrisHighScores.txt";
+	// maximum number of high scores to save
+	private static final int MAX_HIGH_SCORES = 10;
+	private static final String MUSIC_FILE = "/12-hans_zimmer-time.wav";
+	private static final Color TEXT_COLOR = Color.white;
 
 	private Timer timer;
 	private DirectionListener DL;
@@ -85,9 +96,9 @@ public class TetrisPanel extends JPanel
 		}
 
 		//keep track of high scores
-		HighScores = new int[NUM_HIGH_SCORES];
+		HighScores = new int[MAX_HIGH_SCORES];
 		Arrays.fill(HighScores, 0);
-		initials = new String[NUM_HIGH_SCORES];
+		initials = new String[MAX_HIGH_SCORES];
 		Arrays.fill(initials, "xxx");
 
 		//sets up music file to be played
@@ -102,7 +113,7 @@ public class TetrisPanel extends JPanel
 
 		//sets up panel
 		setPreferredSize (new Dimension(WIDTH, HEIGHT));
-		setBackground (Color.black);
+		setBackground (TetrisProperties.BACKGROUND_COLOR);
 		setFocusable(true);
 		DL = new DirectionListener();
 		addKeyListener (DL);
@@ -115,7 +126,7 @@ public class TetrisPanel extends JPanel
 
 	public void newBlock ()
 	{
-		int randBlock = rand.nextInt(7);
+		int randBlock = rand.nextInt(NUM_UNIQUE_TETRIS_BLOCKS);
 
 		switch (randBlock)
 		{
@@ -493,7 +504,7 @@ public class TetrisPanel extends JPanel
 		for (int j = 0; j < Board[0].length; j++)
 			Board[0][j] = new GridBlock();
 
-		score += 100;
+		score += SCORE_INCREMENT_VALUE;
 	}
 
 	public boolean GameOver ()
@@ -589,9 +600,9 @@ public class TetrisPanel extends JPanel
 			}
 		}
 
-		for (int j = 0; j < Board[21].length; j++)
+		for (int j = 0; j < Board[ROWS+1].length; j++)
 		{
-			Board[21][j].fill();
+			Board[ROWS+1][j].fill();
 		}
 
 		//restarts music
@@ -614,7 +625,7 @@ public class TetrisPanel extends JPanel
 		//reads in current high scores from the TetrisHighScores file
 		try
 		{
-			Scanner scan = new Scanner(new File("TetrisHighScores.txt"));
+			Scanner scan = new Scanner(new File(HIGH_SCORES_FILENAME));
 
 			String s1 = scan.next();
 			String s2 = scan.next();
@@ -680,7 +691,7 @@ public class TetrisPanel extends JPanel
 		}
 
 		//writes high scores to file TetrisHighScores
-		PrintWriter outFile = new PrintWriter (new FileWriter("TetrisHighScores.txt"));
+		PrintWriter outFile = new PrintWriter (new FileWriter(HIGH_SCORES_FILENAME));
 
 		//mini-header
 		outFile.println("Tetris High Scores");
@@ -706,7 +717,7 @@ public class TetrisPanel extends JPanel
 		blockHeight = boardHeight/ROWS;
 		moveY = blockHeight;
 
-		page.setColor(Color.white);
+		page.setColor(TEXT_COLOR);
 		page.setFont(scoreFont);
 		page.drawString("Score: " + score, 0, 15);
 		page.drawString("Level: " + level, 320, 15);
@@ -723,7 +734,7 @@ public class TetrisPanel extends JPanel
 				{
 					page.setColor(Board[i][j].getColor());
 					page.fillRect(j*blockWidth, (i - 1)*blockHeight, blockWidth, blockHeight);
-					page.setColor(Color.black);
+					page.setColor(TetrisProperties.BACKGROUND_COLOR);
 					page.drawRect(j*blockWidth, (i - 1)*blockHeight, blockWidth, blockHeight);
 				}
 			}
@@ -739,7 +750,7 @@ public class TetrisPanel extends JPanel
 					page.setColor(block.getColor());
 					page.fillRect((block.getX() + (j)*blockWidth), (block.getY() + i*blockHeight), blockWidth, 
 							blockHeight);
-					page.setColor(Color.black);
+					page.setColor(TetrisProperties.BACKGROUND_COLOR);
 					page.drawRect((block.getX() + (j)*blockWidth), (block.getY() + i*blockHeight), blockWidth, 
 							blockHeight);
 				}
@@ -780,7 +791,7 @@ public class TetrisPanel extends JPanel
 			timer.stop();
 			tetrisMusic.stop();
 			removeKeyListener (DL);
-			page.setColor(Color.white);
+			page.setColor(TEXT_COLOR);
 			page.setFont(gameOverFont);
 			page.drawString("PAUSED", boardWidth/5, boardHeight/2);
 		}
@@ -813,14 +824,14 @@ public class TetrisPanel extends JPanel
 					{
 						page.setColor(Board[1][j].getColor());
 						page.fillRect(j*blockWidth, (0)*blockHeight, blockWidth, blockHeight);
-						page.setColor(Color.black);
+						page.setColor(TetrisProperties.BACKGROUND_COLOR);
 						page.drawRect(j*blockWidth, (0)*blockHeight, blockWidth, blockHeight);
 					}
 				}
 
 				removeKeyListener (DL);
 				removeKeyListener (PL);
-				page.setColor(Color.white);
+				page.setColor(TEXT_COLOR);
 				page.setFont(gameOverFont);
 				page.drawString("GAME OVER!", 0, boardHeight/2);
 

@@ -68,12 +68,12 @@ public class Lblock extends TetrisBlock
 			template[1][2] = true;
 		}
 
-		orientation = ((orientation + 1) % 4);
+		orientation = ((orientation + 1) % BLOCK_BOX_SIZE);
 	}
 
 	public Boolean[][] getNextOrientArray ()
 	{
-		Boolean[][] a = new Boolean[4][4];
+		Boolean[][] a = new Boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
 
 		for (int i = 0; i < a.length; i++)
 		{

@@ -2,15 +2,20 @@ package com.tswift242.tetris.blocks;
 
 import java.awt.Color;
 
+import com.tswift242.tetris.config.TetrisProperties;
+
 public abstract class TetrisBlock
 {
+	// TetrisBlock orientations are logically constrained to fit inside square boxes of this size
+	protected static final int BLOCK_BOX_SIZE = 4;
+
 	protected Boolean[][] template;
 	protected int x, y, orientation, curOrientLength, nextOrientLength;
 	protected Color shapeColor;
 
 	public TetrisBlock()
 	{
-		template = new Boolean[4][4];
+		template = new Boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
 		
 		for (int i = 0; i < template.length; i++)
 		{
@@ -21,7 +26,7 @@ public abstract class TetrisBlock
 		}
 
 		x = y = orientation = curOrientLength = nextOrientLength = 0;
-		shapeColor = Color.black;
+		shapeColor = TetrisProperties.BACKGROUND_COLOR;
 	}
 
 	public Boolean[][] getTemplate ()
