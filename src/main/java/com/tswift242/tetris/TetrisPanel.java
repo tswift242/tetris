@@ -25,7 +25,7 @@ public class TetrisPanel extends JPanel
 	private int moveY, blockWidth, blockHeight, boardWidth, boardHeight, score, currentDelay, level;
 	private boolean startOfGame, colLeft, colRight, colDown, ableToRotate, onTopOfBlockR, paused, musicOn, newGame, GAMEOVERflag, speedIncreased;
 	private Shapes block;
-	private gridBlock[][] Board;
+	private GridBlock[][] Board;
 	private Font scoreFont, gameOverFont;
 	private int[] HighScores;
 	private String[] initials;
@@ -48,12 +48,12 @@ public class TetrisPanel extends JPanel
 		scoreFont = new Font("SansSerif", Font.PLAIN, 20);
 		gameOverFont = new Font("SansSerif", Font.BOLD, 62);
 		rand = new Random();
-		Board = new gridBlock[ROWS + 2][COLUMNS];
+		Board = new GridBlock[ROWS + 2][COLUMNS];
 		for (int i = 0; i < Board.length; i++)
 		{
 			for (int j = 0; j < Board[i].length; j++)
 			{
-				Board[i][j] = new gridBlock();
+				Board[i][j] = new GridBlock();
 			}
 		}
 
@@ -470,7 +470,7 @@ public class TetrisPanel extends JPanel
 		}
 
 		for (int j = 0; j < Board[0].length; j++)
-			Board[0][j] = new gridBlock();
+			Board[0][j] = new GridBlock();
 
 		score += 100;
 	}
@@ -559,12 +559,12 @@ public class TetrisPanel extends JPanel
 		newGame = false;
 
 		//resets board
-		Board = new gridBlock[ROWS + 2][COLUMNS];
+		Board = new GridBlock[ROWS + 2][COLUMNS];
 		for (int i = 0; i < Board.length; i++)
 		{
 			for (int j = 0; j < Board[i].length; j++)
 			{
-				Board[i][j] = new gridBlock();
+				Board[i][j] = new GridBlock();
 			}
 		}
 

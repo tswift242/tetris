@@ -2,12 +2,12 @@ package com.tswift242.tetris;
 
 import java.awt.Color;
 
-public class gridBlock
+public class GridBlock
 {
 	private boolean filled;
 	private Color gridBlockColor;
 
-	public gridBlock ()
+	public GridBlock()
 	{
 		filled = false;
 	}
