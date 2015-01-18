@@ -1,17 +1,17 @@
-package com.tswift242.tetris;
+package com.tswift242.tetris.blocks;
 
 import java.awt.Color;
 
-public class Sblock extends TetrisBlock
+public class Tblock extends TetrisBlock
 {
-	public Sblock ()
+	public Tblock ()
 	{
 		super();
-		setColor(Color.green);
+		setColor(Color.magenta);
 		template[0][1] = true;
-		template[0][2] = true;
 		template[1][0] = true;
 		template[1][1] = true;
+		template[1][2] = true;
 	}
 
 	public void rotate ()
@@ -32,7 +32,7 @@ public class Sblock extends TetrisBlock
 			template[0][0] = true;
 			template[1][0] = true;
 			template[1][1] = true;
-			template[2][1] = true;
+			template[2][0] = true;
 		}
 
 		if (orientation == 1)
@@ -40,9 +40,9 @@ public class Sblock extends TetrisBlock
 			curOrientLength = 2;
 			nextOrientLength = 3;
 
+			template[0][0] = true;
 			template[0][1] = true;
 			template[0][2] = true;
-			template[1][0] = true;
 			template[1][1] = true;
 		}
 
@@ -51,7 +51,7 @@ public class Sblock extends TetrisBlock
 			curOrientLength = 3;
 			nextOrientLength = 2;
 
-			template[0][0] = true;
+			template[0][1] = true;
 			template[1][0] = true;
 			template[1][1] = true;
 			template[2][1] = true;
@@ -63,9 +63,9 @@ public class Sblock extends TetrisBlock
 			nextOrientLength = 3;
 
 			template[0][1] = true;
-			template[0][2] = true;
 			template[1][0] = true;
 			template[1][1] = true;
+			template[1][2] = true;
 		}
 
 		orientation = ((orientation + 1) % 4);
@@ -83,26 +83,25 @@ public class Sblock extends TetrisBlock
 			}
 		}
 
-		
 		if (orientation == 0)
 		{
 			a[0][0] = true;
 			a[1][0] = true;
 			a[1][1] = true;
-			a[2][1] = true;
+			a[2][0] = true;
 		}
 
 		if (orientation == 1)
 		{
+			a[0][0] = true;
 			a[0][1] = true;
 			a[0][2] = true;
-			a[1][0] = true;
 			a[1][1] = true;
 		}
 
 		if (orientation == 2)
 		{
-			a[0][0] = true;
+			a[0][1] = true;
 			a[1][0] = true;
 			a[1][1] = true;
 			a[2][1] = true;
@@ -111,9 +110,9 @@ public class Sblock extends TetrisBlock
 		if (orientation == 3)
 		{
 			a[0][1] = true;
-			a[0][2] = true;
 			a[1][0] = true;
 			a[1][1] = true;
+			a[1][2] = true;
 		}
 
 		return a;

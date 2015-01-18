@@ -10,6 +10,15 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.Arrays;
 
+import com.tswift242.tetris.blocks.Iblock;
+import com.tswift242.tetris.blocks.Jblock;
+import com.tswift242.tetris.blocks.Lblock;
+import com.tswift242.tetris.blocks.Oblock;
+import com.tswift242.tetris.blocks.Sblock;
+import com.tswift242.tetris.blocks.Tblock;
+import com.tswift242.tetris.blocks.TetrisBlock;
+import com.tswift242.tetris.blocks.Zblock;
+
 public class TetrisPanel extends JPanel
 {
 	private final int WIDTH = 400, HEIGHT = 800; //window size

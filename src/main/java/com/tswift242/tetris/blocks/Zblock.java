@@ -1,15 +1,15 @@
-package com.tswift242.tetris;
+package com.tswift242.tetris.blocks;
 
 import java.awt.Color;
 
-public class Jblock extends TetrisBlock
+public class Zblock extends TetrisBlock
 {
-	public Jblock ()
+	public Zblock ()
 	{
 		super();
-		setColor(Color.blue);
+		setColor(Color.red);
 		template[0][0] = true;
-		template[1][0] = true;
+		template[0][1] = true;
 		template[1][1] = true;
 		template[1][2] = true;
 	}
@@ -29,9 +29,9 @@ public class Jblock extends TetrisBlock
 			curOrientLength = 3;
 			nextOrientLength = 2;
 
-			template[0][0] = true;
 			template[0][1] = true;
 			template[1][0] = true;
+			template[1][1] = true;
 			template[2][0] = true;
 		}
 
@@ -42,7 +42,7 @@ public class Jblock extends TetrisBlock
 
 			template[0][0] = true;
 			template[0][1] = true;
-			template[0][2] = true;
+			template[1][1] = true;
 			template[1][2] = true;
 		}
 
@@ -52,9 +52,9 @@ public class Jblock extends TetrisBlock
 			nextOrientLength = 2;
 
 			template[0][1] = true;
+			template[1][0] = true;
 			template[1][1] = true;
 			template[2][0] = true;
-			template[2][1] = true;
 		}
 
 		if (orientation == 3)
@@ -63,7 +63,7 @@ public class Jblock extends TetrisBlock
 			nextOrientLength = 3;
 
 			template[0][0] = true;
-			template[1][0] = true;
+			template[0][1] = true;
 			template[1][1] = true;
 			template[1][2] = true;
 		}
@@ -85,9 +85,9 @@ public class Jblock extends TetrisBlock
 
 		if (orientation == 0)
 		{
-			a[0][0] = true;
 			a[0][1] = true;
 			a[1][0] = true;
+			a[1][1] = true;
 			a[2][0] = true;
 		}
 
@@ -95,26 +95,25 @@ public class Jblock extends TetrisBlock
 		{
 			a[0][0] = true;
 			a[0][1] = true;
-			a[0][2] = true;
+			a[1][1] = true;
 			a[1][2] = true;
 		}
 
 		if (orientation == 2)
 		{
 			a[0][1] = true;
+			a[1][0] = true;
 			a[1][1] = true;
 			a[2][0] = true;
-			a[2][1] = true;
 		}
 
 		if (orientation == 3)
 		{
 			a[0][0] = true;
-			a[1][0] = true;
+			a[0][1] = true;
 			a[1][1] = true;
 			a[1][2] = true;
 		}
-
 
 		return a;
 	}

@@ -1,4 +1,4 @@
-package com.tswift242.tetris;
+package com.tswift242.tetris.blocks;
 
 import java.awt.Color;
 
