@@ -86,7 +86,7 @@ public class TetrisPanel extends JPanel
 		scoreFont = new Font("SansSerif", Font.PLAIN, 20);
 		gameOverFont = new Font("SansSerif", Font.BOLD, 62);
 		rand = new Random();
-		logger.info("Initializing board with %d rows and %d columns", ROWS, COLUMNS);
+		logger.info("Initializing board with {} rows and {} columns", ROWS, COLUMNS);
 		Board = new GridBlock[ROWS + 2][COLUMNS];
 		for (int i = 0; i < Board.length; i++)
 		{
@@ -115,7 +115,7 @@ public class TetrisPanel extends JPanel
 			url1 = new URL ("file", "localhost", MUSIC_FILE);
 			tetrisMusic = JApplet.newAudioClip (url1);
 			tetrisMusic.loop();
-			logger.info("Playing music file %s", MUSIC_FILE);
+			logger.info("Playing music file {}", MUSIC_FILE);
 		}
 		// TODO: separate out specific exceptions
 		catch (Exception e) {
@@ -123,7 +123,7 @@ public class TetrisPanel extends JPanel
 		}
 
 		//sets up panel
-		logger.info("Setting window size to be %d x %d", WIDTH, HEIGHT);
+		logger.info("Setting window size to be {} x {}", WIDTH, HEIGHT);
 		setPreferredSize (new Dimension(WIDTH, HEIGHT));
 		setBackground (TetrisProperties.BACKGROUND_COLOR);
 		setFocusable(true);
@@ -506,7 +506,7 @@ public class TetrisPanel extends JPanel
 	//shifts blocks down and increments score, called when rowIsFull
 	public void clearRow (int r)
 	{
-		logger.info("Clearing row %d and incrementing score by %d", r, SCORE_INCREMENT_VALUE);
+		logger.info("Clearing row {} and incrementing score by {}", r, SCORE_INCREMENT_VALUE);
 		for (int i = r ; i >= 1; i--)
 		{
 			for (int j = 0; j < Board[i].length; j++)
@@ -589,7 +589,7 @@ public class TetrisPanel extends JPanel
 
 		speedIncreased = true;
 
-		logger.info("Increasing speed by setting timer delay to %d", currentDelay);
+		logger.info("Increasing speed by setting timer delay to {}", currentDelay);
 		timer.setDelay(currentDelay);
 	}
 
