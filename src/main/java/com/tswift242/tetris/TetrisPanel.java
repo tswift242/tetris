@@ -1,6 +1,5 @@
 package com.tswift242.tetris;
 
-import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,11 +13,14 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import javax.swing.JApplet;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -66,7 +68,7 @@ public class TetrisPanel extends JPanel
 	private Font scoreFont, gameOverFont;
 	private int[] HighScores;
 	private String[] initials;
-	private AudioClip tetrisMusic;
+	private Clip music;
 	private Random rand;
 
 	public TetrisPanel ()
@@ -109,18 +111,20 @@ public class TetrisPanel extends JPanel
 		Arrays.fill(initials, "xxx");
 
 		//sets up music file to be played
-		URL url1 = null;
 		try
 		{
-			url1 = new URL ("file", "localhost", MUSIC_FILE);
-			tetrisMusic = JApplet.newAudioClip (url1);
-			tetrisMusic.loop();
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(this.getClass().getResource(MUSIC_FILE));
+            music = AudioSystem.getClip();
+            music.open(audioStream);
+			music.loop(Clip.LOOP_CONTINUOUSLY);
 			logger.info("Playing music file {}", MUSIC_FILE);
-		}
-		// TODO: separate out specific exceptions
-		catch (Exception e) {
-			logger.error("Exception when loading music file " + MUSIC_FILE, e);
-		}
+		} catch(UnsupportedAudioFileException e) {
+			logger.error("Audio file " + MUSIC_FILE + " not supported", e);
+		} catch(IOException e) {
+            logger.error("Exception while playing audio file " + MUSIC_FILE, e);
+        } catch(LineUnavailableException e) {
+            logger.error("Audio line unavailable", e);
+        }
 
 		//sets up panel
 		logger.info("Setting window size to be {} x {}", WIDTH, HEIGHT);
@@ -621,7 +625,7 @@ public class TetrisPanel extends JPanel
 		}
 
 		//restarts music
-		tetrisMusic.loop();
+        music.loop(Clip.LOOP_CONTINUOUSLY);
 
 		//starts timer again if timer is stopped
 		/*if (!timer.isRunning())
@@ -806,7 +810,7 @@ public class TetrisPanel extends JPanel
 		if (paused)
 		{
 			timer.stop();
-			tetrisMusic.stop();
+			music.stop();
 			removeKeyListener (DL);
 			page.setColor(TEXT_COLOR);
 			page.setFont(gameOverFont);
@@ -820,7 +824,7 @@ public class TetrisPanel extends JPanel
 				addKeyListener (DL);
 
 				if (musicOn)
-					tetrisMusic.loop();
+                    music.loop(Clip.LOOP_CONTINUOUSLY);
 			}
 		}
 
@@ -833,7 +837,7 @@ public class TetrisPanel extends JPanel
 				GAMEOVERflag = true;
 
 				timer.stop();
-				tetrisMusic.stop();
+				music.stop();
 
 				//paints top row
 				for (int j = 0; j < Board[1].length; j++)
@@ -930,12 +934,12 @@ public class TetrisPanel extends JPanel
 					if (musicOn)
 					{
 						logger.info("Music stopped");
-						tetrisMusic.stop();
+						music.stop();
 					}
 					else
 					{
 						logger.info("Music started");
-						tetrisMusic.loop();
+                        music.loop(Clip.LOOP_CONTINUOUSLY);
 					}
 					musicOn = !musicOn;
 					break;
