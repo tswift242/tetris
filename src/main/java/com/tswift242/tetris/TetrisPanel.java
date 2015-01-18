@@ -44,7 +44,7 @@ public class TetrisPanel extends JPanel
 	private static final int INIT_DELAY = 400; //timer delay
 	// TODO: make this value formulaic instead of fixed in the future
 	private static final int SCORE_INCREMENT_VALUE = 100;
-	private static final int HIGH_SCORES_FILENAME = "TetrisHighScores.txt";
+	private static final String HIGH_SCORES_FILENAME = "TetrisHighScores.txt";
 	// maximum number of high scores to save
 	private static final int MAX_HIGH_SCORES = 10;
 	private static final String MUSIC_FILE = "/12-hans_zimmer-time.wav";
