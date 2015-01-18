@@ -22,6 +22,9 @@ import javax.swing.JApplet;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.tswift242.tetris.blocks.Iblock;
 import com.tswift242.tetris.blocks.Jblock;
 import com.tswift242.tetris.blocks.Lblock;
@@ -34,6 +37,8 @@ import com.tswift242.tetris.config.TetrisProperties;
 
 public class TetrisPanel extends JPanel
 {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
 	private static final int NUM_UNIQUE_TETRIS_BLOCKS = 7;
 	// window size
 	private static final int WIDTH = 400;
@@ -66,6 +71,7 @@ public class TetrisPanel extends JPanel
 
 	public TetrisPanel ()
 	{
+		// TODO: move this to bottom of constructor, right before call to start()
 		timer = new Timer(INIT_DELAY, new TetrisListener());
 
 		currentDelay = INIT_DELAY;
@@ -80,6 +86,7 @@ public class TetrisPanel extends JPanel
 		scoreFont = new Font("SansSerif", Font.PLAIN, 20);
 		gameOverFont = new Font("SansSerif", Font.BOLD, 62);
 		rand = new Random();
+		logger.info("Initializing board with %d rows and %d columns", ROWS, COLUMNS);
 		Board = new GridBlock[ROWS + 2][COLUMNS];
 		for (int i = 0; i < Board.length; i++)
 		{
@@ -108,10 +115,15 @@ public class TetrisPanel extends JPanel
 			url1 = new URL ("file", "localhost", MUSIC_FILE);
 			tetrisMusic = JApplet.newAudioClip (url1);
 			tetrisMusic.loop();
+			logger.info("Playing music file %s", MUSIC_FILE);
 		}
-		catch (Exception exception) {}
+		// TODO: separate out specific exceptions
+		catch (Exception e) {
+			logger.error("Exception when loading music file " + MUSIC_FILE, e);
+		}
 
 		//sets up panel
+		logger.info("Setting window size to be %d x %d", WIDTH, HEIGHT);
 		setPreferredSize (new Dimension(WIDTH, HEIGHT));
 		setBackground (TetrisProperties.BACKGROUND_COLOR);
 		setFocusable(true);
@@ -376,6 +388,7 @@ public class TetrisPanel extends JPanel
 			}
 		}
 
+		// TODO: this should not be part of this method
 		newBlock();
 	}
 
@@ -493,6 +506,7 @@ public class TetrisPanel extends JPanel
 	//shifts blocks down and increments score, called when rowIsFull
 	public void clearRow (int r)
 	{
+		logger.info("Clearing row %d and incrementing score by %d", r, SCORE_INCREMENT_VALUE);
 		for (int i = r ; i >= 1; i--)
 		{
 			for (int j = 0; j < Board[i].length; j++)
@@ -575,6 +589,7 @@ public class TetrisPanel extends JPanel
 
 		speedIncreased = true;
 
+		logger.info("Increasing speed by setting timer delay to %d", currentDelay);
 		timer.setDelay(currentDelay);
 	}
 
@@ -622,6 +637,7 @@ public class TetrisPanel extends JPanel
 
 	public void updateHighScores () throws IOException
 	{
+		logger.info("Updating high scores");
 		//reads in current high scores from the TetrisHighScores file
 		try
 		{
@@ -643,18 +659,19 @@ public class TetrisPanel extends JPanel
 		}
 		catch (FileNotFoundException e)
 		{
-			System.out.println("Input file not found: " + e);
+			logger.error("Input file not found", e);
 		}
 		catch (NumberFormatException e)
 		{
-			System.out.println("Error in the format of the input file:" + e);
+			logger.error("Error in the format of the input file", e);
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
-			System.out.println("There's an error in the numbering of the high scores in the input file, causing an array " +
-						"index to be out of bounds:" + e);
+			logger.error("There's an error in the numbering of the high scores in the input file, causing an array " +
+						"index to be out of bounds", e);
 		}
 
+		// TODO: get this to work
 		//makes a JOptionPane appearing, allowing the user to enter in their initials or their name
 		/*String userInitials;
 		userInitials = JOptionPane.showInputDialog(this, "Enter your initials or your name", "tgs");
@@ -812,6 +829,7 @@ public class TetrisPanel extends JPanel
 		{
 			if (GameOver())
 			{
+				logger.info("Game over!");
 				GAMEOVERflag = true;
 
 				timer.stop();
@@ -837,12 +855,11 @@ public class TetrisPanel extends JPanel
 
 				try
 				{
-					System.out.println("updating high scores");
 					updateHighScores();
 				}
 				catch (IOException e)
 				{
-					System.out.println(e);
+					logger.error("Exception updating high scores", e);
 				}
 			}
 		}
@@ -906,15 +923,18 @@ public class TetrisPanel extends JPanel
 			switch (event.getKeyCode())
 			{
 				case KeyEvent.VK_P:
+					logger.info("Paused state changed");
 					paused = !paused;
 					break;
 				case KeyEvent.VK_V:
 					if (musicOn)
 					{
+						logger.info("Music stopped");
 						tetrisMusic.stop();
 					}
 					else
 					{
+						logger.info("Music started");
 						tetrisMusic.loop();
 					}
 					musicOn = !musicOn;
@@ -934,6 +954,7 @@ public class TetrisPanel extends JPanel
 			switch (event.getKeyCode())
 			{
 				case KeyEvent.VK_N:
+					logger.info("New game selected");
 					newGame = true;
 					break;
 			}			

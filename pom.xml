@@ -86,12 +86,12 @@
 				</executions>
 				<configuration>
 					<mainClass>${project.groupId}.Tetris</mainClass>
-					<!--<systemProperties>
+					<systemProperties>
 						<systemProperty>
 							<key>log4j.configuration</key>
 							<value>file:${basedir}/src/main/resources/log4j.properties</value>
 						</systemProperty>
-					</systemProperties>-->
+					</systemProperties>
 				</configuration>
 			</plugin>
 
@@ -100,7 +100,7 @@
 
   <dependencies>
 
-	<!--<dependency>
+	<dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-api</artifactId>
 		<version>1.7.10</version>
@@ -110,7 +110,7 @@
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>1.7.10</version>
-	</dependency>-->
+	</dependency>
 
   </dependencies>
 </project>
