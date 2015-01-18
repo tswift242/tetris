@@ -2,13 +2,13 @@ package com.tswift242.tetris;
 
 import java.awt.Color;
 
-public class Shapes
+public class TetrisBlock
 {
 	protected Boolean[][] template;
 	protected int x, y, orientation, curOrientLength, nextOrientLength;
 	protected Color shapeColor;
 
-	public Shapes ()
+	public TetrisBlock()
 	{
 		template = new Boolean[4][4];
 		

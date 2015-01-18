@@ -2,7 +2,7 @@ package com.tswift242.tetris;
 
 import java.awt.Color;
 
-public class Iblock extends Shapes
+public class Iblock extends TetrisBlock
 {
 	public Iblock ()
 	{

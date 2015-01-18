@@ -24,7 +24,7 @@ public class TetrisPanel extends JPanel
 	private NewGameListener NGL;
 	private int moveY, blockWidth, blockHeight, boardWidth, boardHeight, score, currentDelay, level;
 	private boolean startOfGame, colLeft, colRight, colDown, ableToRotate, onTopOfBlockR, paused, musicOn, newGame, GAMEOVERflag, speedIncreased;
-	private Shapes block;
+	private TetrisBlock block;
 	private GridBlock[][] Board;
 	private Font scoreFont, gameOverFont;
 	private int[] HighScores;
