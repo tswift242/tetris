@@ -1,14 +1,26 @@
 package com.tswift242.tetris;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.Random;
-import java.io.*;
 import java.applet.AudioClip;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
-import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+import javax.swing.JApplet;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.tswift242.tetris.blocks.Iblock;
 import com.tswift242.tetris.blocks.Jblock;
