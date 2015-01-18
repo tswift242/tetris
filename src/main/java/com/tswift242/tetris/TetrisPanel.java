@@ -117,6 +117,8 @@ public class TetrisPanel extends JPanel
             music = AudioSystem.getClip();
             music.open(audioStream);
 			music.loop(Clip.LOOP_CONTINUOUSLY);
+			// this can be closed now that it has been loaded into Clip
+			audioStream.close();
 			logger.info("Playing music file {}", MUSIC_FILE);
 		} catch(UnsupportedAudioFileException e) {
 			logger.error("Audio file " + MUSIC_FILE + " not supported", e);
@@ -597,6 +599,7 @@ public class TetrisPanel extends JPanel
 		timer.setDelay(currentDelay);
 	}
 
+	// TODO: this should hook into logic in TetrisPanel constructor
 	//called when a new game is started
 	public void newGame ()
 	{
@@ -838,6 +841,7 @@ public class TetrisPanel extends JPanel
 
 				timer.stop();
 				music.stop();
+				music.close();
 
 				//paints top row
 				for (int j = 0; j < Board[1].length; j++)
