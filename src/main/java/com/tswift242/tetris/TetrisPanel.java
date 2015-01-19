@@ -60,6 +60,7 @@ public class TetrisPanel extends JPanel
 	private Timer timer;
 	private DirectionListener DL;
 	private PauseListener PL;
+	private MusicListener musicListener;
 	private NewGameListener NGL;
 	private int moveY, blockWidth, blockHeight, boardWidth, boardHeight, score, currentDelay, level;
 	private boolean startOfGame, colLeft, colRight, colDown, ableToRotate, onTopOfBlockR, paused, musicOn, newGame, GAMEOVERflag, speedIncreased;
@@ -137,6 +138,8 @@ public class TetrisPanel extends JPanel
 		addKeyListener (DL);
 		PL = new PauseListener();
 		addKeyListener (PL);
+		musicListener = new MusicListener();
+		addKeyListener(musicListener);
 		/*NGL = new NewGameListener();
 		addKeyListener (NGL);*/
 		timer.start();
@@ -638,6 +641,7 @@ public class TetrisPanel extends JPanel
 		{
 			addKeyListener (DL);
 			addKeyListener (PL);
+			addKeyListener(musicListener);
 		}
 		timer.start();	
 	}
@@ -857,6 +861,7 @@ public class TetrisPanel extends JPanel
 
 				removeKeyListener (DL);
 				removeKeyListener (PL);
+				removeKeyListener(musicListener);
 				page.setColor(TEXT_COLOR);
 				page.setFont(gameOverFont);
 				page.drawString("GAME OVER!", 0, boardHeight/2);
@@ -877,6 +882,7 @@ public class TetrisPanel extends JPanel
 			newGame();
 	}
 
+	// listens for a timer to go off, indicating that the current block needs to be moved down
 	private class TetrisListener implements ActionListener 
 	{
 		public void actionPerformed (ActionEvent event) 
@@ -890,6 +896,7 @@ public class TetrisPanel extends JPanel
 		}
 	}
 
+	// listens for directional key input from the user, either to move the current block or to rotate it
 	private class DirectionListener implements KeyListener
 	{
 		public void keyPressed (KeyEvent event)
@@ -924,6 +931,7 @@ public class TetrisPanel extends JPanel
 		public void keyReleased (KeyEvent event) {}
 	}
 
+	// listens for the "p" key to be pressed, which pauses the game
 	private class PauseListener implements KeyListener
 	{
 		public void keyPressed (KeyEvent event)
@@ -934,6 +942,21 @@ public class TetrisPanel extends JPanel
 					logger.info("Paused state changed");
 					paused = !paused;
 					break;
+			}
+			repaint();
+		}
+
+		public void keyTyped (KeyEvent event) {}
+		public void keyReleased (KeyEvent event) {}
+	}
+
+	// listens for the "v" key to be pressed, which toggles the in-game music
+	private class MusicListener implements KeyListener
+	{
+		public void keyPressed (KeyEvent event)
+		{
+			switch (event.getKeyCode())
+			{
 				case KeyEvent.VK_V:
 					if (musicOn)
 					{
