@@ -1,121 +1,65 @@
 package com.tswift242.tetris.blocks;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Jblock extends TetrisBlock
 {
+	private static final List<BlockOrientation> JBLOCK_ORIENTATIONS = constructOrientations();
+
 	public Jblock ()
 	{
 		super();
 		setColor(Color.blue);
-		template[0][0] = true;
-		template[1][0] = true;
-		template[1][1] = true;
-		template[1][2] = true;
 	}
 
-	public void rotate ()
-	{
-		for (int i = 0; i < template.length; i++)
-		{
-			for (int j = 0; j < template[i].length; j++)
-			{
-				template[i][j] = false;
-			}
-		}
+	private static List<BlockOrientation> constructOrientations() {
+		List<BlockOrientation> blockOrientations = new ArrayList<>(4);
 
-		if (orientation == 0)
-		{
-			curOrientLength = 3;
-			nextOrientLength = 2;
+		boolean[][] orientation0Impl = new boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
+        initOrientationToFalse(orientation0Impl);
+        orientation0Impl[0][0] = true;
+        orientation0Impl[1][0] = true;
+        orientation0Impl[1][1] = true;
+        orientation0Impl[1][2] = true;
+        BlockOrientation orientation0 = new BlockOrientation(orientation0Impl, 2);
 
-			template[0][0] = true;
-			template[0][1] = true;
-			template[1][0] = true;
-			template[2][0] = true;
-		}
+        boolean[][] orientation1Impl = new boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
+        initOrientationToFalse(orientation1Impl);
+        orientation1Impl[0][0] = true;
+        orientation1Impl[0][1] = true;
+        orientation1Impl[1][0] = true;
+        orientation1Impl[2][0] = true;
+        BlockOrientation orientation1 = new BlockOrientation(orientation1Impl, 3);
 
-		if (orientation == 1)
-		{
-			curOrientLength = 2;
-			nextOrientLength = 3;
+        boolean[][] orientation2Impl = new boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
+        initOrientationToFalse(orientation2Impl);
+        orientation2Impl[0][0] = true;
+        orientation2Impl[0][1] = true;
+        orientation2Impl[0][2] = true;
+        orientation2Impl[1][2] = true;
+        BlockOrientation orientation2 = new BlockOrientation(orientation2Impl, 2);
 
-			template[0][0] = true;
-			template[0][1] = true;
-			template[0][2] = true;
-			template[1][2] = true;
-		}
+        boolean[][] orientation3Impl = new boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
+        initOrientationToFalse(orientation3Impl);
+        orientation3Impl[0][1] = true;
+        orientation3Impl[1][1] = true;
+        orientation3Impl[2][0] = true;
+        orientation3Impl[2][1] = true;
+        BlockOrientation orientation3 = new BlockOrientation(orientation3Impl, 3);
 
-		if (orientation == 2)
-		{
-			curOrientLength = 3;
-			nextOrientLength = 2;
+		blockOrientations.add(orientation0);
+		blockOrientations.add(orientation1);
+		blockOrientations.add(orientation2);
+		blockOrientations.add(orientation3);
 
-			template[0][1] = true;
-			template[1][1] = true;
-			template[2][0] = true;
-			template[2][1] = true;
-		}
-
-		if (orientation == 3)
-		{
-			curOrientLength = 2;
-			nextOrientLength = 3;
-
-			template[0][0] = true;
-			template[1][0] = true;
-			template[1][1] = true;
-			template[1][2] = true;
-		}
-
-		orientation = ((orientation + 1) % BLOCK_BOX_SIZE);
+		return blockOrientations;
 	}
 
-	public Boolean[][] getNextOrientArray ()
-	{
-		Boolean[][] a = new Boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
-
-		for (int i = 0; i < a.length; i++)
-		{
-			for (int j = 0; j < a[i].length; j++)
-			{
-				a[i][j] = false;
-			}
-		}
-
-		if (orientation == 0)
-		{
-			a[0][0] = true;
-			a[0][1] = true;
-			a[1][0] = true;
-			a[2][0] = true;
-		}
-
-		if (orientation == 1)
-		{
-			a[0][0] = true;
-			a[0][1] = true;
-			a[0][2] = true;
-			a[1][2] = true;
-		}
-
-		if (orientation == 2)
-		{
-			a[0][1] = true;
-			a[1][1] = true;
-			a[2][0] = true;
-			a[2][1] = true;
-		}
-
-		if (orientation == 3)
-		{
-			a[0][0] = true;
-			a[1][0] = true;
-			a[1][1] = true;
-			a[1][2] = true;
-		}
-
-
-		return a;
+    @Override
+	protected List<BlockOrientation> getOrientations() {
+		return JBLOCK_ORIENTATIONS;
 	}
 }

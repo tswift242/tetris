@@ -1,37 +1,37 @@
 package com.tswift242.tetris.blocks;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.List;
 
 import com.tswift242.tetris.config.TetrisProperties;
 
 public abstract class TetrisBlock
 {
+    // blocks are rotated 90 degrees --> 4 different orientations (max)
+    protected static final int NUM_ORIENTATIONS = 4;
 	// TetrisBlock orientations are logically constrained to fit inside square boxes of this size
 	protected static final int BLOCK_BOX_SIZE = 4;
 
-	protected Boolean[][] template;
-	protected int x, y, orientation, curOrientLength, nextOrientLength;
-	protected Color shapeColor;
+	// this blocks 4 different orientations; specified in subclasses
+	private final List<BlockOrientation> orientations;
+
+	// current block layout
+    private BlockOrientation currOrientation;
+    private int x, y, currOrientationIndex;
+    private Color shapeColor;
 
 	public TetrisBlock()
 	{
-		template = new Boolean[BLOCK_BOX_SIZE][BLOCK_BOX_SIZE];
-		
-		for (int i = 0; i < template.length; i++)
-		{
-			for (int j = 0; j < template[i].length; j++)
-			{
-				template[i][j] = false;
-			}
-		}
-
-		x = y = orientation = curOrientLength = nextOrientLength = 0;
+		orientations = getOrientations();
+		x = y = currOrientationIndex = 0;
+        currOrientation = orientations.get(currOrientationIndex);
 		shapeColor = TetrisProperties.BACKGROUND_COLOR;
 	}
 
-	public Boolean[][] getTemplate ()
+	public boolean[][] getCurrentOrientation()
 	{
-		return template;
+		return currOrientation.getOrientation();
 	}
 
 	public int getX ()
@@ -49,16 +49,6 @@ public abstract class TetrisBlock
 		return shapeColor;
 	}
 
-	public int getCurOrientLength ()
-	{
-		return curOrientLength;
-	}
-
-	public int getNextOrientLength ()
-	{
-		return nextOrientLength;
-	}
-
 	public void setX (int x)
 	{
 		this.x = x;
@@ -69,12 +59,40 @@ public abstract class TetrisBlock
 		this.y = y;
 	}
 
-	public void setColor (Color c)
+	protected void setColor (Color c)
 	{
 		shapeColor = c;
 	}
 
-	public void rotate () {}
+	public void rotate () {
+        currOrientationIndex = getNextOrientationIndex();
+        currOrientation = orientations.get(currOrientationIndex);
+    }
 
-	public Boolean[][] getNextOrientArray () {return template;}
+    //TODO: delete? Check if we actually need this
+	public boolean[][] getNextOrientation () {
+        return orientations.get(getNextOrientationIndex()).getOrientation();
+    }
+
+    //TODO: this is a temp method inserted for now to enable current implementation of getCurrentOrientation(),
+    // which returns the orientation impl, instead of the whole BlockOrientation. We should be returning the whole
+    // BlockOrientation object, at which point this should be removed
+    public int getDiffInNextOrientLengthFromCurrent() {
+        return (currOrientation.length() - orientations.get(getNextOrientationIndex()).length());
+    }
+
+
+
+	protected abstract List<BlockOrientation> getOrientations();
+
+    private int getNextOrientationIndex() {
+        return ((currOrientationIndex + 1) % NUM_ORIENTATIONS);
+    }
+
+    // this is a utility method used by subclasses
+    protected static void initOrientationToFalse(boolean[][] orientation) {
+        for(boolean[] array : orientation) {
+            Arrays.fill(array, false);
+        }
+    }
 }

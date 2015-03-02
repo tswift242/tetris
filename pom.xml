@@ -6,7 +6,7 @@
 
   <groupId>com.tswift242.tetris</groupId>
   <artifactId>tetris</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.1.0</version>
   <name>Tetris</name>
 
   <packaging>jar</packaging>

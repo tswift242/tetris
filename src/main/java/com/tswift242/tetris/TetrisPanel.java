@@ -191,17 +191,18 @@ public class TetrisPanel extends JPanel
 		return (block.getX() + blockCol*blockWidth)/blockWidth;
 	}
 
+    //TODO: store leftMostCol as meta data in BlockOrientation to make this much easier
 	public int getLeftmostX ()
 	{
 		int LeftmostCol = 0;
 		int LeftmostX;
 		boolean foundLeftmostCol = false;
 
-		for (int i = 0; i < block.getTemplate().length; i++)
+		for (int i = 0; i < block.getCurrentOrientation().length; i++)
 		{
-			for (int j = 0; j < (block.getTemplate())[i].length; j++)
+			for (int j = 0; j < (block.getCurrentOrientation())[i].length; j++)
 			{
-				if ((block.getTemplate())[j][i])
+				if ((block.getCurrentOrientation())[j][i])
 				{
 					if (!foundLeftmostCol)
 						LeftmostCol = i;
@@ -215,18 +216,19 @@ public class TetrisPanel extends JPanel
 
 		return LeftmostX;
 	}
-	
+
+    //TODO: store rightMostCol as meta data in BlockOrientation to make this much easier
 	public int getRightmostX ()
 	{
 		int RightmostCol = 3;
 		int RightmostX;
 		boolean foundRightmostCol = false;
 
-		for (int i = block.getTemplate().length - 1; i >= 0; i--)
+		for (int i = block.getCurrentOrientation().length - 1; i >= 0; i--)
 		{
-			for (int j = 0; j < (block.getTemplate())[i].length; j++)
+			for (int j = 0; j < (block.getCurrentOrientation())[i].length; j++)
 			{
-				if ((block.getTemplate())[j][i])
+				if ((block.getCurrentOrientation())[j][i])
 				{
 					if (!foundRightmostCol)
 						RightmostCol = i;
@@ -251,9 +253,9 @@ public class TetrisPanel extends JPanel
 
 		if (c > 0)
 		{
-			for (int i = 0; i < block.getTemplate().length; i++)
+			for (int i = 0; i < block.getCurrentOrientation().length; i++)
 			{
-				if ((block.getTemplate())[i][a])
+				if ((block.getCurrentOrientation())[i][a])
 				{
 					int r = getBoardRow(i);
 
@@ -279,9 +281,9 @@ public class TetrisPanel extends JPanel
 
 		if (c < Board[0].length - 1)
 		{
-			for (int i = 0; i < block.getTemplate().length; i++)
+			for (int i = 0; i < block.getCurrentOrientation().length; i++)
 			{
-				if ((block.getTemplate())[i][a])
+				if ((block.getCurrentOrientation())[i][a])
 				{
 					int r = getBoardRow(i);
 	
@@ -308,9 +310,9 @@ public class TetrisPanel extends JPanel
 		lowestCol1 = lowestCol2 = lowestCol3 = lowestCol4 = 0;
 		int r1, r2, r3, r4, c1, c2, c3, c4;
 
-		for (int j = (block.getTemplate())[0].length - 1; j >= 0; j--)
+		for (int j = (block.getCurrentOrientation())[0].length - 1; j >= 0; j--)
 		{
-			if ((block.getTemplate())[j][0])
+			if ((block.getCurrentOrientation())[j][0])
 			{
 				if (!foundLowestCol1)
 					lowestCol1 = j;
@@ -323,9 +325,9 @@ public class TetrisPanel extends JPanel
 		r1 = getBoardRow(lowestCol1);
 		c1 = getBoardCol(0);
 
-		for (int j = (block.getTemplate())[1].length - 1; j >= 0; j--)
+		for (int j = (block.getCurrentOrientation())[1].length - 1; j >= 0; j--)
 		{
-			if ((block.getTemplate())[j][1])
+			if ((block.getCurrentOrientation())[j][1])
 			{
 				if (!foundLowestCol2)
 					lowestCol2 = j;
@@ -338,9 +340,9 @@ public class TetrisPanel extends JPanel
 		r2 = getBoardRow(lowestCol2);
 		c2 = getBoardCol(1);
 
-		for (int j = (block.getTemplate())[2].length - 1; j >= 0; j--)
+		for (int j = (block.getCurrentOrientation())[2].length - 1; j >= 0; j--)
 		{
-			if ((block.getTemplate())[j][2])
+			if ((block.getCurrentOrientation())[j][2])
 			{
 				if (!foundLowestCol3)
 					lowestCol3 = j;
@@ -353,9 +355,9 @@ public class TetrisPanel extends JPanel
 		r3 = getBoardRow(lowestCol3);
 		c3 = getBoardCol(2);
 
-		for (int j = (block.getTemplate())[3].length - 1; j >= 0; j--)
+		for (int j = (block.getCurrentOrientation())[3].length - 1; j >= 0; j--)
 		{
-			if ((block.getTemplate())[j][3])
+			if ((block.getCurrentOrientation())[j][3])
 			{
 				if (!foundLowestCol4)
 					lowestCol4 = j;
@@ -382,11 +384,11 @@ public class TetrisPanel extends JPanel
 
 	public void addToBoard ()
 	{
-		for (int i = 0; i < (block.getTemplate()).length; i++)
+		for (int i = 0; i < (block.getCurrentOrientation()).length; i++)
 		{
-			for (int j = 0; j < (block.getTemplate())[i].length; j++)
+			for (int j = 0; j < (block.getCurrentOrientation())[i].length; j++)
 			{
-				if ((block.getTemplate())[i][j])
+				if ((block.getCurrentOrientation())[i][j])
 				{
 					int r = getBoardRow(i);
 					int c = getBoardCol(j);
@@ -406,11 +408,11 @@ public class TetrisPanel extends JPanel
 	{
 		boolean rowInitiallyEmpty = false;
 
-		for (int i = 0; i < (block.getTemplate()).length; i++)
+		for (int i = 0; i < (block.getCurrentOrientation()).length; i++)
 		{
-			for (int j = 0; j < (block.getTemplate())[i].length; j++)
+			for (int j = 0; j < (block.getCurrentOrientation())[i].length; j++)
 			{
-				if ((block.getTemplate())[i][j])
+				if ((block.getCurrentOrientation())[i][j])
 				{
 					int r = getBoardRow(i);
 					int c = getBoardCol(j);
@@ -445,7 +447,9 @@ public class TetrisPanel extends JPanel
 
 		int a = (getRightmostX() - block.getX())/blockWidth - 1;
 
-		if ((block.getCurOrientLength() - block.getNextOrientLength()) > (Board[0].length - 1 - getBoardCol(a)))
+        //TODO: this logic currently checks vertical length difference; it should be based off of horizontal length,
+        // in which case if would be next-curr
+		if ((block.getDiffInNextOrientLengthFromCurrent()) > (Board[0].length - 1 - getBoardCol(a)))
 			ableToRotate = false;					
 
 		return ableToRotate;
@@ -456,11 +460,11 @@ public class TetrisPanel extends JPanel
 	{
 		boolean onTopOfBlock = false;
 
-		for (int i = 0; i < (block.getTemplate()).length; i++)
+		for (int i = 0; i < (block.getCurrentOrientation()).length; i++)
 		{
-			for (int j = 0; j < (block.getTemplate())[i].length; j++)
+			for (int j = 0; j < (block.getCurrentOrientation())[i].length; j++)
 			{
-				if ((block.getTemplate())[i][j])
+				if ((block.getCurrentOrientation())[i][j])
 				{
 					int c = getBoardCol(j);
 					int r = getBoardRow(i);
@@ -475,7 +479,7 @@ public class TetrisPanel extends JPanel
 	}
 
 	//used to check if block can rotate or if another block is interfering
-	public boolean onTopOfBlock (Boolean[][] a)
+	public boolean onTopOfBlock (boolean[][] a)
 	{
 		boolean onTopOfBlock = false;
 
@@ -769,11 +773,11 @@ public class TetrisPanel extends JPanel
 		}
 
 		//draws newly created block at top, center of screen
-		for (int i = 0; i < (block.getTemplate()).length; i++)
+		for (int i = 0; i < (block.getCurrentOrientation()).length; i++)
 		{
-			for (int j = 0; j < (block.getTemplate())[i].length; j++)
+			for (int j = 0; j < (block.getCurrentOrientation())[i].length; j++)
 			{
-				if ((block.getTemplate())[i][j])
+				if ((block.getCurrentOrientation())[i][j])
 				{
 					page.setColor(block.getColor());
 					page.fillRect((block.getX() + (j)*blockWidth), (block.getY() + i*blockHeight), blockWidth, 
@@ -796,7 +800,7 @@ public class TetrisPanel extends JPanel
 		//checks to see if block can rotate
 		ableToRotate = canRotate();
 		if (ableToRotate)
-			onTopOfBlockR = onTopOfBlock(block.getNextOrientArray());
+			onTopOfBlockR = onTopOfBlock(block.getNextOrientation());
 
 		//loops through board to check for any completely filled ROWS
 		for (int i = (Board.length - 2); i >= 1; i--)
