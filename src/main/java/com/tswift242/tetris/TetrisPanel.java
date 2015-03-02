@@ -176,11 +176,10 @@ public class TetrisPanel extends JPanel
 				break;
 		}
 
-		block.setX((getWidth()/2) - 2*blockWidth);
+        //TODO: we may want to tweak what we're subtracting off here. We want to make sure the initial X is a multiple
+        // of blockWidth (getWidth()/COLUMNS)
+		block.setX((getWidth()/2) - 2*(getWidth()/COLUMNS));
 		block.setY(0);
-
-		if (onTopOfBlock())
-			addToBoardGameOver();
 	}
 
 	public int getBoardRow (int blockRow)
@@ -793,6 +792,9 @@ public class TetrisPanel extends JPanel
 		if (colDown) {
             addToBoard();
             newBlock();
+            if (onTopOfBlock()) {
+                addToBoardGameOver();
+            }
         }
 
         //TODO: move this logic into DirectionListener, and store in local vars instead of fields
