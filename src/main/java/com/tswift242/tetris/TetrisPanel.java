@@ -63,7 +63,7 @@ public class TetrisPanel extends JPanel
 	private MusicListener musicListener;
 	private NewGameListener NGL;
 	private int moveY, blockWidth, blockHeight, boardWidth, boardHeight, score, currentDelay, level;
-	private boolean startOfGame, colLeft, colRight, colDown, ableToRotate, onTopOfBlockR, paused, musicOn, newGame, GAMEOVERflag, speedIncreased;
+	private boolean colLeft, colRight, colDown, ableToRotate, onTopOfBlockR, paused, musicOn, newGame, GAMEOVERflag, speedIncreased;
 	private TetrisBlock block;
 	private GridBlock[][] Board;
 	private Font scoreFont, gameOverFont;
@@ -74,13 +74,9 @@ public class TetrisPanel extends JPanel
 
 	public TetrisPanel ()
 	{
-		// TODO: move this to bottom of constructor, right before call to start()
-		timer = new Timer(INIT_DELAY, new TetrisListener());
-
 		currentDelay = INIT_DELAY;
 		score = 0;
 		level = 1;
-		startOfGame = true;
 		paused = false;
 		musicOn = true;
 		newGame = false;
@@ -134,6 +130,8 @@ public class TetrisPanel extends JPanel
 		setPreferredSize (new Dimension(WIDTH, HEIGHT));
 		setBackground (TetrisProperties.BACKGROUND_COLOR);
 		setFocusable(true);
+
+        // add listeners
 		DL = new DirectionListener();
 		addKeyListener (DL);
 		PL = new PauseListener();
@@ -142,6 +140,10 @@ public class TetrisPanel extends JPanel
 		addKeyListener(musicListener);
 		/*NGL = new NewGameListener();
 		addKeyListener (NGL);*/
+
+        // start game
+        newBlock(); // create initial block
+        timer = new Timer(INIT_DELAY, new TetrisListener());
 		timer.start();
 	}
 
@@ -398,9 +400,6 @@ public class TetrisPanel extends JPanel
 				}
 			}
 		}
-
-		// TODO: this should not be part of this method
-		newBlock();
 	}
 
 	//only used when about to get a Game Over
@@ -612,10 +611,10 @@ public class TetrisPanel extends JPanel
 	{
 		timer.stop();
 		addToBoard();
+        newBlock();
 
 		//resets variables
 		score = 0;
-		startOfGame = true;
 		paused = false;
 		newGame = false;
 
@@ -754,9 +753,6 @@ public class TetrisPanel extends JPanel
 		page.drawString("Score: " + score, 0, 15);
 		page.drawString("Level: " + level, 320, 15);
 
-		if (startOfGame)
-			newBlock();
-
 		//draws all gridBlocks in Board background array
 		for (int i = 1; i < Board.length - 1; i++)
 		{
@@ -794,9 +790,12 @@ public class TetrisPanel extends JPanel
 		colDown = collisionDown();
 
 		//checks to see if on top of another block, if so, adds current block to board and creates a new one
-		if (colDown)
-			addToBoard();
+		if (colDown) {
+            addToBoard();
+            newBlock();
+        }
 
+        //TODO: move this logic into DirectionListener, and store in local vars instead of fields
 		//checks to see if block can rotate
 		ableToRotate = canRotate();
 		if (ableToRotate)
@@ -891,8 +890,6 @@ public class TetrisPanel extends JPanel
 	{
 		public void actionPerformed (ActionEvent event) 
 		{
-			startOfGame = false;
-
 			if ((block != null) && (!colDown)) //TODO: fix null check
 				block.setY(block.getY() + moveY);
 
